@@ -1,0 +1,36 @@
+{
+  "notifications": [
+    {
+      "id": "notif-1",
+      "type": "info",
+      "title": "New Update Available",
+      "message": "A new version of the application is available. Click to update.",
+      "timestamp": "2024-04-22T10:00:00Z",
+      "read": false
+    },
+    {
+      "id": "notif-2",
+      "type": "success",
+      "title": "Profile Updated",
+      "message": "Your profile information has been successfully updated.",
+      "timestamp": "2024-04-22T09:30:00Z",
+      "read": false
+    },
+    {
+      "id": "notif-3",
+      "type": "warning",
+      "title": "Storage Warning",
+      "message": "Your storage is almost full. Please free up some space.",
+      "timestamp": "2024-04-22T09:00:00Z",
+      "read": true
+    },
+    {
+      "id": "notif-4",
+      "type": "error",
+      "title": "Connection Error",
+      "message": "Unable to connect to the server. Please check your connection.",
+      "timestamp": "2024-04-22T08:45:00Z",
+      "read": true
+    }
+  ]
+}

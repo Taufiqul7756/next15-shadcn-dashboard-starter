@@ -114,28 +114,14 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                 />
               </div>
             </Link>
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleCollapse}
-                className="hidden lg:flex"
-              >
-                {isCollapsed ? (
-                  <ChevronRight className="h-4 w-4" />
-                ) : (
-                  <ChevronLeft className="h-4 w-4" />
-                )}
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={toggleSidebar}
-                className="lg:hidden"
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleSidebar}
+              className="lg:hidden"
+            >
+              <X className="h-5 w-5" />
+            </Button>
           </div>
           <nav className="flex-1 space-y-1 p-4">
             {sidebarItems.map((item) => (
@@ -247,6 +233,18 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               className="lg:hidden"
             >
               <Menu className="h-5 w-5" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleCollapse}
+              className="hidden lg:flex"
+            >
+              {isCollapsed ? (
+                <ChevronRight className="h-4 w-4" />
+              ) : (
+                <ChevronLeft className="h-4 w-4" />
+              )}
             </Button>
             <Breadcrumbs />
           </div>
