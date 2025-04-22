@@ -39,6 +39,12 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Breadcrumbs } from "@/components/breadcrumbs";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const user = {
   name: "John Doe",
@@ -94,11 +100,20 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
       >
         <div className="flex h-full flex-col">
           <div className="flex h-16 items-center justify-between border-b px-4">
-            {!isCollapsed && (
-              <Link href="/dashboard" className="text-xl font-semibold">
-                Admin
-              </Link>
-            )}
+            <Link href="/dashboard" className="flex items-center gap-2">
+              <div
+                className={cn(
+                  "flex items-center justify-center",
+                  isCollapsed ? "w-8" : "w-32"
+                )}
+              >
+                <img
+                  src="/images/bjap_logo.png"
+                  alt="Logo"
+                  className={cn("h-8 w-auto", isCollapsed ? "h-6" : "h-8")}
+                />
+              </div>
+            </Link>
             <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
@@ -124,73 +139,94 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
           </div>
           <nav className="flex-1 space-y-1 p-4">
             {sidebarItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                  pathname === item.href
-                    ? "bg-primary text-primary-foreground"
-                    : "hover:bg-accent hover:text-accent-foreground",
-                  isCollapsed && "justify-center"
-                )}
-              >
-                <item.icon className="h-4 w-4" />
-                {!isCollapsed && <span>{item.title}</span>}
-              </Link>
+              <TooltipProvider key={item.href}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Link
+                      href={item.href}
+                      className={cn(
+                        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                        pathname === item.href
+                          ? "bg-primary text-primary-foreground"
+                          : "hover:bg-accent hover:text-accent-foreground",
+                        isCollapsed && "justify-center"
+                      )}
+                    >
+                      <item.icon className="h-4 w-4" />
+                      {!isCollapsed && <span>{item.title}</span>}
+                    </Link>
+                  </TooltipTrigger>
+                  {isCollapsed && (
+                    <TooltipContent side="right">
+                      <p>{item.title}</p>
+                    </TooltipContent>
+                  )}
+                </Tooltip>
+              </TooltipProvider>
             ))}
           </nav>
           <div className="border-t p-4">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className={cn(
-                    "w-full justify-start gap-3",
-                    isCollapsed && "justify-center"
-                  )}
-                >
-                  <LogOut className="h-4 w-4" />
-                  {!isCollapsed && <span>Sign Out</span>}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">
-                      {user.name}
-                    </p>
-                    <p className="text-xs leading-none text-muted-foreground">
-                      {user.email}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/dashboard/profile">
-                    <User className="mr-2 h-4 w-4" />
-                    Profile
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/dashboard/notifications">
-                    <Bell className="mr-2 h-4 w-4" />
-                    Notifications
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className="text-red-600"
-                  onSelect={(e) => {
-                    e.preventDefault();
-                    setIsSignOutDialogOpen(true);
-                  }}
-                >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  Sign out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className={cn(
+                          "w-full justify-start gap-3",
+                          isCollapsed && "justify-center"
+                        )}
+                      >
+                        <LogOut className="h-4 w-4" />
+                        {!isCollapsed && <span>Sign Out</span>}
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-56">
+                      <DropdownMenuLabel>
+                        <div className="flex flex-col space-y-1">
+                          <p className="text-sm font-medium leading-none">
+                            {user.name}
+                          </p>
+                          <p className="text-xs leading-none text-muted-foreground">
+                            {user.email}
+                          </p>
+                        </div>
+                      </DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard/profile">
+                          <User className="mr-2 h-4 w-4" />
+                          Profile
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
+                        <Link href="/dashboard/notifications">
+                          <Bell className="mr-2 h-4 w-4" />
+                          Notifications
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        className="text-red-600"
+                        onSelect={(e) => {
+                          e.preventDefault();
+                          setIsSignOutDialogOpen(true);
+                        }}
+                      >
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Sign out
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TooltipTrigger>
+                {isCollapsed && (
+                  <TooltipContent side="right">
+                    <p>Sign Out</p>
+                  </TooltipContent>
+                )}
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
       </aside>
